@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top" />
+  <style>
+    table {
+      border-collapse: collapse;
+      border: 0px none;
+      width: min;
+      margin: .5em 0em 0em 0em;
+      background: #ffffff;
+    }
+
+    tr {
+      border: 0px none;
+      border-bottom: 1px solid;
+    }
+
+    thead tr {
+      border: 0px none;
+      border-bottom: 2px solid;
+    }
+
+    table td {
+      padding: .5em;
+    }
+
+    blockquote {
+      font-size: 90%;
+      color: rgb(136, 136, 136);
+      margin-top: .5em;
+      white-space: pre-line;
+    }
+
+    blockquote * {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    <strong><?= remitente_NOMBRE_USUAL ?>:</strong>
+  </p>
+  <p><em>(Mensaje enviado automáticamente)</em></p>
+  <p>Con base en los datos introducidos en el formulario <em>Crear un oficio</em>, el sistema Oficios:</p>
+  <ul>
+    <li>
+      Te asignó el rol de <strong>REMITENTE</strong> del oficio <strong><?= oficio_NUMERO ?></strong> (número
+      provisional;
+      <strong>consecutivo <?= oficio_CONSECUTIVO ?></strong>), creado el
+      <?= response_FECHA_LARGA ?>.
+    </li>
+    <li>
+      Generó el archivo <strong><?= file_NAME ?></strong> (adjunto en este mensaje) en el Google Drive de la
+      Unidad de Información como
+      <strong>borrador</strong> de dicho oficio.
+    </li>
+    <li>
+      Asignó los permisos de acceso al borrador y envió una copia de esta notificación a las personas definidas en los
+      roles <strong>REDACTOR</strong>, <strong>ENLACE</strong> (si aplican) y <strong>JEFATURA</strong>.
+      <table>
+        <!-- <thead>
+            <tr>
+              <th style="text-align:left;">Rol</th>
+              <th>Permisos</th>
+              <th>Asignado a</th>
+            </tr>
+          </thead> -->
+        <tbody>
+          <tr>
+            <td style="text-align:left;"><strong>REMITENTE</strong></td>
+            <td>Puede ver y modificar</td>
+            <td>
+              <?= rol_REMITENTE ?>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left;"><strong>REDACTOR</strong></td>
+            <td>Puede ver y modificar</td>
+            <td>
+              <?= rol_REDACTOR ?>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left;"><strong>JEFATURA</strong></td>
+            <td>Puede ver</td>
+            <td>
+              <?= rol_JEFATURA ?>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left;"><strong>ENLACE</strong></td>
+            <td>Puede ver</td>
+            <td>
+              <?= rol_ENLACE ?>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+  </ul>
+  <p>Ahora puedes colaborar con estas personas en la revisión y modificación del borrador. Ninguna otra persona (excepto
+    el administrador del sistema) puede acceder al archivo.</p>
+  <p>El documento tiene la marca de agua
+    <strong style="color: rgb(230, 0, 0);">BORRADOR — Versión preliminar para revisión</strong>. El oficio no ha
+    sido ni será remitido automáticamente.
+  </p>
+  <h2>Actualmente, el sistema tiene los siguientes datos:</h2>
+  <p>De la persona remitente:</p>
+  <ul>
+    <li>
+      <strong>Nombre:</strong>
+      <?= remitente_NOMBRE_COMPLETO ?>
+      <br />
+        Iniciales:
+      <?= remitente_INICIALES ?>
+    </li>
+    <li>
+      <strong>Área:</strong>
+      <?= remitente_ADSCRIPCION ?>
+      <br />
+        Siglas:
+      <?= oficio_SIGLAS ?>
+    </li>
+    <li>
+      <strong>Puesto: </strong>
+      <?= remitente_PUESTO ?>
+    </li>
+  </ul>
+  <p>Información sustantiva:</p>
+  <ul>
+    <li>
+      <strong>Destinatario(s): </strong>
+      <?= oficio_DESTINATARIO ?>
+    </li>
+    <li>
+      <strong>Asunto: </strong>
+      <?= oficio_ASUNTO ?>
+    </li>
+    <li>
+      <strong>Texto:</strong>
+      <blockquote>
+        <?= oficio_TEXTO ?>
+      </blockquote>
+    </li>
+    <li>
+      <strong>Ciudad: </strong>
+      <?= oficio_CIUDAD ?>
+    </li>
+    <li>
+      <strong>Fecha: </strong>
+      <?= oficio_FECHA_LARGA ?>
+    </li>
+  </ul>
+  <p>Datos accesorios:</p>
+  <ul>
+    <li>
+      <strong>Con copia para: </strong>
+      <?= oficio_CON_COPIA_PARA ?>
+    </li>
+    <li>
+      <strong>Iniciales de REDACTOR (valor calculado): </strong>
+      <?= redactor_INICIALES ?>
+    </li>
+  </ul>
+  <h2>¿Qué sigue?</h2>
+  <ul>
+    <li>Abre el <a href="<?= file_LINK_OPEN ?>" rel="noopener noreferrer" target="_blank">borrador</a> para revisar,
+      comentar y modificar el oficio.</li>
+    <li>
+      Abre el <a href="https://docs.google.com/spreadsheets/d/1RNqhY8CRYJMM21EPaYm7N1ArxG3o0ht7Mbym4w5Wra8/edit"
+        rel="noopener noreferrer" target="_blank">tablero Oficios</a> para ver la lista de oficios creados y para
+      cambiar el status
+      del documento:
+      <ul>
+        <li>
+          Cuando el archivo esté listo para ser firmado, cambia el status a <strong>FINAL</strong> para:
+          <ul>
+            <li>retirar la marca de agua,</li>
+            <li>actualizar los datos del oficio en la base de datos,</li>
+            <li>permitir el acceso para cualquier persona con el link y</li>
+            <li>habilitar el link para descargar el PDF.</li>
+          </ul>
+        </li>
+        <li>
+          Si el documento no será remitido por cualquier razón, cambia el status a <strong>CANCELADO</strong>.
+          <ul>
+            <li>El documento ya no será accesible desde el tablero.</li>
+            <li>El número de oficio consecutivo no será reasignado a oficios futuros.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>Avísame si necesitas ayuda. Tus dudas, comentarios y sugerencias son bienvenidas.</p>
+  <p><br /></p>
+  <p>
+    Atentamente, Rafael Pi<br />
+    Unidad de Documentación y Servicios de Información<br />
+    Departamento de Bibliotecas, Publicaciones y Fomento a la Lectura<br />
+    Biblioteca Central Carlos Montemayor<br />
+    (614) 214 4800 ext. 264<br />
+    Secretaría de Cultura, Estado de Chihuahua
+  </p>
+</body>
+
+</html>
