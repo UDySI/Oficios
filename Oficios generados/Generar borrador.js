@@ -15,23 +15,25 @@ function generarBorrador(row_number) {
   let data = sheet.getRange(row_number, 1, 1, sheet.getLastColumn()).getValues();
   Logger.log(data);
 
-  // Recupera el nombre del archivo que se va a crear
-  // let file_NAME = data[0][headers.indexOf('file_NAME')];
+  // Genera el nombre del archivo que se va a crear
   let consecutivo_string = data[0][headers.indexOf('consecutivo')].toString();
   let file_NAME = 'oficio ' + consecutivo_string.padStart(3, '0') + ' [BORRADOR]';
   Logger.log(file_NAME);
+
+  // Crea la copia en la carpeta BORRADORES
   let folder = DriveApp.getFolderById(folder_id_BORRADORES);
   let template = DriveApp.getFileById(file_id_TEMPLATE);
   let copy = template.makeCopy(file_NAME, folder);
   let borrador = DocumentApp.openById(copy.getId());
-
   Logger.log('Se creó el documento \'' + borrador.getName() + '\' en ' + borrador.getUrl());
 
-  // Merge data
+  // Insertar valores en la plantilla
+  // Header
   let document_header = borrador.getHeader();
   document_header.replaceText('{{oficio_NUMERO}}', data[0][headers.indexOf('oficio_NUMERO')]);
   document_header.replaceText('{{oficio_ASUNTO}}', data[0][headers.indexOf('oficio_ASUNTO')]);
 
+  // Body
   let document_body = borrador.getBody();
   document_body.replaceText('{{oficio_CIUDAD}}', data[0][headers.indexOf('oficio_CIUDAD')]);
   document_body.replaceText('{{oficio_FECHA_LARGA}}', data[0][headers.indexOf('oficio_FECHA_LARGA')]);
@@ -63,8 +65,9 @@ function generarBorrador(row_number) {
   // Crear accesos al documento
 
   // Jefe del Departamento
-  borrador.addViewer(correo_JEFATURA); // Si es remitente o redactor, se promueve a editor
+  borrador.addViewer(correo_JEFATURA);
   Logger.log('Se agregó a la Jefatura del Departamento (\'' + correo_JEFATURA + '\') como lector');
+  // Si es remitente o redactor, se promueve a editor a continuación
 
   // Persona remitente
   let correo_REMITENTE = data[0][headers.indexOf('remitente_CORREO')];

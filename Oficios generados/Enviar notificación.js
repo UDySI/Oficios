@@ -48,8 +48,7 @@ function enviarNotificacion(id_CONSECUTIVO) {
   let email_CC = data[0][headers.indexOf('email_CC')];
   Logger.log('email_CC: ' + email_CC);
 
-  /*  SUSPENDIDO TEMPORALMENTE hasta que los usuarios puedan actualizar status
-  */
+  /* Notificación de prueba (no se envía a los usuarios */
 
   GmailApp.sendEmail( // recipient, subject, body, options
     'udysi.rafaelpi@gmail.com', // email_TO,
@@ -57,15 +56,10 @@ function enviarNotificacion(id_CONSECUTIVO) {
     "Su cliente de correo no puede mostrar HTML. Por favor, abra este mensaje en un cliente de correo que pueda mostrar HTML.",
     {
       name: "UDySI: Oficios",
-      htmlBody: HtmlNotification // ,
-      // cc: email_CC
+      htmlBody: HtmlNotification // , cc: email_CC
     }
   );
 
   Logger.log("Se envió notificación a " + email_TO + " con CC para " + email_CC);
 
-}
-
-function launch_enviarNotificacion() {
-  enviarNotificacion(2);
 }
